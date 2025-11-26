@@ -8,88 +8,105 @@
         <link rel="icon" href="assets/icons/pizza.svg" type="image/svg+xml">
         <link rel="stylesheet" href="style.css">
 
-    <div class="container">
+<body>
         <header class="header">
             <h1>
                 <img src="assets/icons/pizza.svg" alt="Pizza" class="title-icon">
                 Pizza Index
             </h1>
-            <p>Detector de pizzas en tiempo real - Vista del Computador</p>
+            <p>Detector de pizzas en tiempo real</p>
         </header>
 
-            <div class="main-controls">
-                <div class="button-group">
-                    <button id="local-camera-btn" class="btn-primary">🎥 Usar Cámara Local</button>
-                    <button id="stop-camera-btn" class="btn-secondary" style="display: none;">⏹️ Detener Cámara</button>
-                </div>
-                <div class="button-group">
-                    <button id="start-audio-btn" class="btn-primary">🔊 Iniciar Audio</button>
-                    <button id="stop-audio-btn" class="btn-secondary muted" style="display: none;">🔇 Silenciar Todo</button>
-                </div>
-            </div>
-
-        <div id="video-container">
-            <video id="video" autoplay playsinline style="display: none;"></video>
-            <canvas id="canvas"></canvas>
-            <canvas id="detection-canvas"></canvas>
-            <div id="placeholder">
-                <p>📱 Esperando conexión del celular o cámara local...</p>
-                <p class="small">Haz clic en "+ Connect" para usar celular o "🎥 Usar Cámara Local"</p>
-            </div>
+        <div class="top-right-controls">
+            <button id="local-camera-btn" class="btn-secondary">🎥 Testear con Cámara Local</button>
+            <button id="stop-camera-btn" class="btn-secondary" style="display: none;">⏹️ Detener Cámara</button>
         </div>
 
-        <div id="info">
-            <div id="status">🔵 Listo para detectar pizzas</div>
-            <div id="detection">Ninguna pizza detectada</div>
-        </div>
-
-        <!-- EVENTO DETECTADO -->
-        <div id="event-display" class="event-display" style="display: none;">
-            <div class="event-header">
-                <h2 id="event-title">Evento Detectado</h2>
-                <button id="clear-event" class="btn-clear">+</button>
-            </div>
-            <div class="event-content">
-                <div class="event-main">
-                    <div class="event-emoji" id="event-emoji">🍕</div>
-                    <div class="event-details">
-                        <h3 id="event-name">Nombre del Evento</h3>
-                        <p id="event-date" class="event-date">Fecha</p>
-                        <p id="event-category" class="event-category">Categoría</p>
+        <div class="main-content">
+            <!-- Columna Izquierda: Estadísticas y Eventos -->
+            <div class="left-column">
+                <!-- EVENTO DETECTADO -->
+                <div id="event-display" class="event-display" style="display: none;">
+                    <div class="event-header">
+                        <h2 id="event-title">Evento Detectado</h2>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-main">
+                            <div class="event-emoji" id="event-emoji">🍕</div>
+                            <div class="event-details">
+                                <h3 id="event-name">Nombre del Evento</h3>
+                                <p id="event-date" class="event-date">Fecha</p>
+                                <p id="event-category" class="event-category">Categoría</p>
+                            </div>
+                        </div>
+                        <div class="event-stats">
+                            <div class="stat-box">
+                                <div class="stat-label">Pizzas Críticas</div>
+                                <div class="stat-number" id="event-pizzas-criticas">0</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Incremento</div>
+                                <div class="stat-number" id="event-incremento">0%</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Gravedad</div>
+                                <div class="stat-number" id="event-gravedad">-</div>
+                            </div>
+                        </div>
+                        <div class="event-description">
+                            <p id="event-desc">Descripción del evento</p>
+                        </div>
                     </div>
                 </div>
-                <div class="event-stats">
-                    <div class="stat-box">
-                        <div class="stat-label">Pizzas Críticas</div>
-                        <div class="stat-number" id="event-pizzas-criticas">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Incremento</div>
-                        <div class="stat-number" id="event-incremento">0%</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Gravedad</div>
-                        <div class="stat-number" id="event-gravedad">-</div>
+
+                <div id="info">
+                    <div id="detection">Ninguna pizza detectada</div>
+                </div>
+
+                <div class="stats-container">
+                    <h3>🤖 Predicciones del Modelo</h3>
+                    <div id="ml-predictions" class="ml-predictions">
+                        <p class="loading-ml">Cargando modelo...</p>
                     </div>
                 </div>
-                <div class="event-description">
-                    <p id="event-desc">Descripción del evento</p>
+            </div>
+
+            <!-- Columna Derecha: Cámara y Controles -->
+            <div class="right-column">
+                <div class="main-controls">
+                    <div class="button-group">
+                    </div>
+                </div>
+
+                <div id="video-container">
+                    <video id="video" autoplay playsinline style="display: none;"></video>
+                    <canvas id="canvas"></canvas>
+                    <canvas id="detection-canvas"></canvas>
+                    <div id="placeholder">
+                        <p>Haga clic en "Usar Cámara Local" para iniciar</p>
+                    </div>
+                </div>
+
+                <div class="volume-control" style="margin-top: -45px;">
+                    <div id="volumeIconWrapper" class="volume-icon-wrapper">
+                        <svg class="volume-icon-unmuted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        </svg>
+                        <svg class="volume-icon-muted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <line x1="23" y1="9" x2="17" y2="15"></line>
+                            <line x1="17" y1="9" x2="23" y2="15"></line>
+                        </svg>
+                    </div>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider">
                 </div>
             </div>
         </div>
-
-        <div class="stats-container">
-            <h3>🤖 Predicciones del Modelo ML (Teachable Machine):</h3>
-            <div id="ml-predictions" class="ml-predictions">
-                <p class="loading-ml">Cargando modelo...</p>
-            </div>
-        </div>
-
         <footer class="footer">
             <p>Proyecto IIC2026 - Visualización de Información 2025</p>
-            <p>Usando Protobject Framework para comunicación entre dispositivos</p>
         </footer>
-    </div>
+    </body>
 
     <!-- Scripts movidos al final para asegurar que el DOM esté cargado -->
     <!-- TensorFlow.js y Teachable Machine -->
@@ -115,286 +132,206 @@
         const detectionCanvas = document.getElementById('detection-canvas');
         const detectionCtx = detectionCanvas.getContext('2d');
         const video = document.getElementById('video');
-        const statusEl = document.getElementById('status');
         const detectionEl = document.getElementById('detection');
-        const debugLog = document.getElementById('debug-log');
-                    const placeholder = document.getElementById('placeholder');
-                    const localCameraBtn = document.getElementById('local-camera-btn');
-                    const stopCameraBtn = document.getElementById('stop-camera-btn');
-                    const startAudioBtn = document.getElementById('start-audio-btn');
-                    const stopAudioBtn = document.getElementById('stop-audio-btn');
-                    const mlPredictionsEl = document.getElementById('ml-predictions');
+        const debugLog = document.getElementById('debug-log'); // Restaurado para evitar ReferenceError
+        const placeholder = document.getElementById('placeholder');
+        const localCameraBtn = document.getElementById('local-camera-btn');
+        const stopCameraBtn = document.getElementById('stop-camera-btn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeIconWrapper = document.getElementById('volumeIconWrapper');
+        const mlPredictionsEl = document.getElementById('ml-predictions');
+        
         let frameCount = 0;
         let isConnected = false;
         let localStream = null;
         let animationId = null;
-
+        
         // Variables para el modelo ML
         let model = null;
         let modelLoaded = false;
         const MODEL_URL = './model.json';
         const METADATA_URL = './metadata.json';
-
+        
         // Variables para detección de eventos
         let eventoActual = null;
-        let pixelsPorCm = 20; // Calibración inicial (ajustar según setup)
-
+        let lastDetectionTime = 0; // Para el buffer de detección
+        
         // =======================================================================
         // ASIGNACIÓN DE CLASES DEL MODELO A EVENTOS
-        // 
-        // ❗ IMPORTANTE: Edita esta sección para que coincida con tus clases
-        // El "nombre de la clase" debe ser EXACTAMENTE el mismo que en Teachable Machine.
         // =======================================================================
         const MODEL_CLASS_MAPPING = {
-            // Ejemplo:
-            // "Nombre de Clase de Teachable Machine": { color: "ROJO", tamaño: 15 },
-            
             "Class 1": { color: "ROJO", tamaño: 15 },   // Mapeado a Invasión de Irak
             "Class 2": { color: "AZUL", tamaño: 15 },   // Mapeado a 11 de Septiembre
-            
-            // --- AGREGA TUS OTRAS CLASES AQUÍ ---
-
         };
-
-        // ==========================================
-        // FUNCIONES DE DEBUG
-        // ==========================================
-        function log(message, type = 'info') {
-            console.log(message);
-            if (debugLog) {
-                const entry = document.createElement('div');
-                entry.className = 'log-entry';
-                if (type === 'error') entry.classList.add('log-error');
-                if (type === 'success') entry.classList.add('log-success');
-
-                const timestamp = new Date().toLocaleTimeString();
-                entry.textContent = `[${timestamp}] ${message}`;
-
-                debugLog.appendChild(entry);
-                debugLog.scrollTop = debugLog.scrollHeight;
-
-                // Mantener solo los últimos 50 logs
-                while (debugLog.children.length > 50) {
-                    debugLog.removeChild(debugLog.firstChild);
-                }
-            }
-        }
-
-        function updateStatus(message, type = 'info') {
-            if (statusEl) {
-                statusEl.textContent = message;
-                statusEl.className = '';
-                if (type === 'success') statusEl.classList.add('connected');
-                if (type === 'error') statusEl.classList.add('error');
-            }
-            log(message, type);
-        }
-
-        // ==========================================
-        // FUNCIONES DE EVENTOS
-        // ==========================================
-        function mostrarEvento(evento) {
-            if (!evento) return;
-
-            eventoActual = evento;
-            const display = document.getElementById('event-display');
-
-            // Actualizar contenido
-            document.getElementById('event-emoji').textContent = evento.emoji;
-            document.getElementById('event-name').textContent = evento.nombre;
-            document.getElementById('event-date').textContent = evento.fecha;
-            document.getElementById('event-category').textContent = evento.categoria;
-            document.getElementById('event-pizzas-criticas').textContent = evento.pizzasCriticas;
-            document.getElementById('event-incremento').textContent = evento.incremento + '%';
-            document.getElementById('event-gravedad').textContent = TAMAÑOS_CONFIG[evento.tamaño].gravedad;
-            document.getElementById('event-desc').textContent = evento.descripcion;
-
-            // Aplicar color de categoría
-            const colorConfig = COLORES_CONFIG[evento.color];
-            display.style.borderColor = colorConfig.hex;
-            display.style.borderLeftColor = colorConfig.hex;
-            display.style.borderLeftWidth = '6px';
-
-            // Mostrar con animación
-            display.style.display = 'block';
-            setTimeout(() => display.classList.add('show'), 10);
-
-            log(`🎯 Evento detectado: ${evento.nombre} (${evento.color}, ${evento.tamaño}cm)`, 'success');
-            updateStatus(`✅ Evento: ${evento.nombre}`, 'success');
-        }
-
-        function cerrarEvento() {
-            const display = document.getElementById('event-display');
-            display.classList.remove('show');
-            setTimeout(() => {
-                display.style.display = 'none';
-                eventoActual = null;
-            }, 300);
-            updateStatus('🔵 Listo para detectar pizzas', 'info');
-        }
-
-        // Botón para cerrar evento
-        document.getElementById('clear-event').addEventListener('click', cerrarEvento);
-
-        // ==========================================
-        // CARGAR MODELO DE TEACHABLE MACHINE
-        // ==========================================
-        async function cargarModelo() {
-            try {
-                log('🤖 Cargando modelo de TensorFlow...', 'info');
-                mlPredictionsEl.innerHTML = '<p class="loading-ml">⏳ Cargando modelo ML...</p>';
-
-                // Cargar modelo usando Teachable Machine Library
-                model = await tmImage.load(MODEL_URL, METADATA_URL);
-                modelLoaded = true;
-
-                log('✅ Modelo ML cargado correctamente!', 'success');
-                log(`📊 Clases detectadas: ${model.getClassLabels().join(', ')}`, 'info');
-
-                mlPredictionsEl.innerHTML = `
-                    <div class="ml-ready">
-                        <p>✅ Modelo cargado</p>
-                        <p class="ml-classes">Clases: ${model.getClassLabels().join(', ')}</p>
-                    </div>
-                `;
-
-            } catch (error) {
-                log('❌ Error cargando modelo: ' + error.message, 'error');
-                mlPredictionsEl.innerHTML = `<p class="error-ml">❌ Error cargando modelo</p>`;
-                modelLoaded = false;
-            }
-        }
-
-        // ==========================================
-        // HACER PREDICCIÓN Y MANEJAR LÓGICA DE EVENTOS
-        // ==========================================
-        async function predecirConModelo() {
-            if (!modelLoaded || !model || !canvas.width) return;
-
-            try {
-                // 1. Hacer predicción usando el canvas actual
-                const predictions = await model.predict(canvas);
-                predictions.sort((a, b) => b.probability - a.probability);
-
-                // 2. Actualizar la UI de predicciones de ML
-                const predHTML = predictions.map((pred, idx) => {
-                    const percentage = (pred.probability * 100).toFixed(1);
-                    const barWidth = percentage;
-                    const isTop = idx === 0;
-                    return `
-                        <div class="prediction-item ${isTop ? 'top-prediction' : ''}">
-                            <div class="prediction-label">${pred.className}</div>
-                            <div class="prediction-bar-container">
-                                <div class="prediction-bar" style="width: ${barWidth}%"></div>
-                            </div>
-                            <div class="prediction-value">${percentage}%</div>
-                        </div>
-                    `;
-                }).join('');
-                mlPredictionsEl.innerHTML = predHTML;
-
-                // 3. Lógica de activación de eventos basada en la predicción
-                const topPrediction = predictions[0];
-                const confidenceThreshold = 0.95; // Umbral de confianza (95%)
-
-                if (topPrediction && topPrediction.probability > confidenceThreshold) {
-                    const detectedClassName = topPrediction.className;
-                    const eventConfig = MODEL_CLASS_MAPPING[detectedClassName];
-
-                    if (eventConfig) {
-                        const eventoDetectado = buscarEvento(eventConfig.color, eventConfig.tamaño);
-
-                        if (eventoDetectado) {
-                            // Si el evento detectado es diferente al actual, o si no hay ninguno
-                            if (!eventoActual || eventoActual.id !== eventoDetectado.id) {
-                                AudioEngine.stopAll(); // Detener sonidos anteriores
-                                AudioEngine.play(eventoDetectado);
-                                mostrarEvento(eventoDetectado);
+        
+                            // ========================================== 
+                            // FUNCIONES DE DEBUG
+                            // ========================================== 
+                            function log(message, type = 'info') {
+                                console.log(message);
+                                // El contenedor de debug fue eliminado, solo se loguea a la consola.
                             }
-                            // Si es el mismo evento, no hacemos nada para no interrumpir el sonido/animación
-                        }
-                    } else {
-                        // La clase detectada no tiene un evento mapeado
-                        if (eventoActual) {
-                            cerrarEvento();
-                            AudioEngine.stopAll();
-                        }
-                    }
-                } else {
-                    // La confianza es muy baja, no hay detección
-                    if (eventoActual) {
-                        cerrarEvento();
-                        AudioEngine.stopAll();
-                    }
-                }
+                    
+                            // ========================================== 
+                            // FUNCIONES DE EVENTOS
+                            // ========================================== 
+                            function mostrarEvento(evento) {
+                                if (!evento) return;
+                                const display = document.getElementById('event-display');
+                                
+                                // Actualizar contenido
+                                document.getElementById('event-emoji').innerHTML = `<img src="${COLORES_CONFIG[evento.color].icono}" alt="${COLORES_CONFIG[evento.color].nombre}" style="width: 48px; height: 48px;">`;
+                                document.getElementById('event-name').textContent = evento.nombre;
+                                document.getElementById('event-date').textContent = evento.fecha;
+                                document.getElementById('event-category').textContent = evento.categoria;
+                                document.getElementById('event-pizzas-criticas').textContent = evento.pizzasCriticas;
+                                document.getElementById('event-incremento').textContent = evento.incremento + '%';
+                                document.getElementById('event-gravedad').textContent = TAMAÑOS_CONFIG[evento.tamaño].gravedad;
+                                document.getElementById('event-desc').textContent = evento.descripcion;
+                    
+                                // Aplicar color de categoría
+                                const colorConfig = COLORES_CONFIG[evento.color];
+                                display.style.borderLeftColor = colorConfig.hex;
+                    
+                                // Mostrar con animación
+                                display.style.display = 'block';
+                                setTimeout(() => display.classList.add('show'), 10);
+                            }
+                    
+                            function cerrarEvento() {
+                                const display = document.getElementById('event-display');
+                                display.classList.remove('show');
+                                setTimeout(() => {
+                                    display.style.display = 'none';
+                                    eventoActual = null;
+                                }, 300);
+                            }
+                    
+                            // ========================================== 
+                            // CARGAR MODELO DE TEACHABLE MACHINE
+                            // ========================================== 
+                            async function cargarModelo() {
+                                try {
+                                    log('Cargando modelo de ML...', 'info');
+                                    model = await tmImage.load(MODEL_URL, METADATA_URL);
+                                    modelLoaded = true;
+                                    log('✅ Modelo cargado exitosamente', 'success');
+                                    mlPredictionsEl.innerHTML = '<p class="ml-ready">Modelo listo para detectar.</p>';
+                                } catch (error) {
+                                    log('❌ Error cargando el modelo: ' + error.message, 'error');
+                                    mlPredictionsEl.innerHTML = '<p class="error-ml">Error al cargar el modelo.</p>';
+                                }
+                            }
+                    
+                            // ========================================== 
+                            // HACER PREDICCIÓN Y MANEJAR LÓGICA DE EVENTOS
+                            // ========================================== 
+                            async function predecirConModelo() {
+                                if (!modelLoaded || !model || !canvas.width) return;
+                    
+                                try {
+                                    const predictions = await model.predict(canvas);
+                                    predictions.sort((a, b) => b.probability - a.probability);
+                    
+                                    const predHTML = predictions.map((pred, idx) => {
+                                        const percentage = (pred.probability * 100).toFixed(1);
+                                        const barWidth = percentage;
+                                        const isTop = idx === 0;
+                                        return `
+                                            <div class="prediction-item ${isTop ? 'top-prediction' : ''}">
+                                                <div class="prediction-label">${pred.className}</div>
+                                                <div class="prediction-bar-container">
+                                                    <div class="prediction-bar" style="width: ${barWidth}%"></div>
+                                                </div>
+                                                <div class="prediction-value">${percentage}%</div>
+                                            </div>
+                                        `;
+                                    }).join('');
+                                    mlPredictionsEl.innerHTML = predHTML;
+                    
+                                    const topPrediction = predictions[0];
+                                    const confidenceThreshold = 0.50;
+                    
+                                    if (topPrediction && topPrediction.probability > confidenceThreshold) {
+                                        const detectedClassName = topPrediction.className;
+                                        const eventConfig = MODEL_CLASS_MAPPING[detectedClassName];
+                    
+                                        if (eventConfig) {
+                                            const eventoDetectado = buscarEvento(eventConfig.color, eventConfig.tamaño);
+                                            if (eventoDetectado) {
+                                                detectionEl.textContent = `🎯 Evento: ${eventoDetectado.nombre} (${(topPrediction.probability * 100).toFixed(1)}%)`;
+                                                if (!eventoActual || eventoActual.id !== eventoDetectado.id) {
+                                                    const now = Date.now();
+                                                    if (now - lastDetectionTime < 3000) return;
+                                                    lastDetectionTime = now;
+                                                    
+                                                    AudioEngine.stopAll();
+                                                    AudioEngine.play(eventoDetectado);
+                                                    eventoActual = eventoDetectado;
+                                                    mostrarEvento(eventoDetectado);
+                                                }
+                                            }
+                                        } else {
+                                            if (eventoActual) {
+                                                detectionEl.textContent = '⏳ Esperando detección...';
+                                                cerrarEvento();
+                                                AudioEngine.stopAll();
+                                            }
+                                        }
+                                    } else {
+                                        if (eventoActual) {
+                                            detectionEl.textContent = '⏳ Esperando detección...';
+                                            lastDetectionTime = 0;
+                                            cerrarEvento();
+                                            AudioEngine.stopAll();
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('Error en predicción:', error);
+                                    if (eventoActual) {
+                                        cerrarEvento();
+                                        AudioEngine.stopAll();
+                                    }
+                                }
+                            }
+        
+        // ========================================== 
+        // CONTROLES DE AUDIO
+        // ========================================== 
+        volumeSlider.addEventListener('input', (e) => {
+            const volume = parseInt(e.target.value);
+            AudioEngine.setVolume(volume);
+            volumeIconWrapper.parentElement.classList.toggle('is-muted', volume === 0);
+        });
 
-            } catch (error) {
-                console.error('Error en predicción:', error);
-                if (eventoActual) {
-                    cerrarEvento();
-                    AudioEngine.stopAll();
-                }
-            }
-        }
+        volumeIconWrapper.addEventListener('click', () => {
+            const { isMuted, volume } = AudioEngine.toggleMute();
+            volumeSlider.value = isMuted ? 0 : volume;
+            volumeIconWrapper.parentElement.classList.toggle('is-muted', isMuted);
+        });
 
-        
-                    // ==========================================
-                    // CONTROLES DE AUDIO
-                    // ==========================================
-                    startAudioBtn.addEventListener('click', async () => {
-                        await AudioEngine.start();
-                        if (AudioEngine.isStarted) {
-                            log('🔊 Motor de audio iniciado.', 'success');
-                            startAudioBtn.style.display = 'none';
-                            stopAudioBtn.style.display = 'inline-block';
-                        } else {
-                            log('❌ El audio no se pudo iniciar. Requiere interacción del usuario.', 'error');
-                        }
-                    });
-        
-                    stopAudioBtn.addEventListener('click', () => {
-                        AudioEngine.stopAll();
-                        stopAudioBtn.classList.toggle('muted');
-                        if (stopAudioBtn.classList.contains('muted')) {
-                            stopAudioBtn.textContent = '🔇 Audio Detenido';
-                        } else {
-                            // This state is not really used as we don't have a resume all function
-                            stopAudioBtn.textContent = '🔊 Iniciar Audio';
-                        }
-                    });
-        
-                    // ==========================================
-                    // CÁMARA LOCAL
-                    // ==========================================
-                    localCameraBtn.addEventListener('click', async () => {
+        // ========================================== 
+        // CÁMARA LOCAL
+        // ========================================== 
+        localCameraBtn.addEventListener('click', async () => {
             try {
+                await AudioEngine.start();
                 log('🎥 Iniciando cámara local...', 'info');
-                updateStatus('🔄 Accediendo a cámara...', 'info');
-
                 localStream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: { ideal: 640 },
-                        height: { ideal: 480 }
-                    }
+                    video: { width: { ideal: 640 }, height: { ideal: 480 } }
                 });
-
                 video.srcObject = localStream;
-                video.style.display = 'none'; // Ocultar video, solo mostrar canvas
+                video.style.display = 'none';
                 placeholder.style.display = 'none';
                 isConnected = true;
-
                 localCameraBtn.style.display = 'none';
                 stopCameraBtn.style.display = 'inline-block';
-
-                updateStatus('🟢 Cámara local activa', 'success');
                 log('✅ Cámara local iniciada correctamente', 'success');
 
-                // Procesar frames continuamente
                 processLocalCamera();
-
             } catch (error) {
                 log('❌ Error accediendo a cámara: ' + error.message, 'error');
-                updateStatus('❌ Error: ' + error.message, 'error');
+                alert('No se pudo iniciar la cámara: ' + error.message);
             }
         });
 
@@ -404,17 +341,13 @@
                 localStream = null;
                 video.srcObject = null;
                 isConnected = false;
-
                 if (animationId) {
                     cancelAnimationFrame(animationId);
                     animationId = null;
                 }
-
                 placeholder.style.display = 'flex';
                 localCameraBtn.style.display = 'inline-block';
                 stopCameraBtn.style.display = 'none';
-
-                updateStatus('🔵 Cámara detenida', 'info');
                 log('⏹️ Cámara local detenida', 'info');
             }
         });
@@ -424,19 +357,15 @@
                 animationId = requestAnimationFrame(processLocalCamera);
                 return;
             }
-
-            // Capturar frame del video
             if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
                 detectionCanvas.width = video.videoWidth;
                 detectionCanvas.height = video.videoHeight;
             }
-
             ctx.drawImage(video, 0, 0);
             frameCount++;
             predecirConModelo();
-
             animationId = requestAnimationFrame(processLocalCamera);
         }
 
@@ -447,57 +376,208 @@
             if (!isConnected) {
                 isConnected = true;
                 placeholder.style.display = 'none';
-                updateStatus('🟢 Celular conectado! Recibiendo video...', 'success');
                 log('📱 Celular conectado exitosamente', 'success');
             }
 
             if (message && message.type === 'frame') {
-                mostrarFrame(message.frame);
+                const img = new Image();
+                img.onload = () => {
+                    if (canvas.width !== img.width || canvas.height !== img.height) {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        detectionCanvas.width = img.width;
+                        detectionCanvas.height = img.height;
+                    }
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                    frameCount++;
+                    predecirConModelo();
+                };
+                img.onerror = () => {
+                    log('❌ Error cargando frame', 'error');
+                };
+                img.src = message.frame;
             }
         });
-
-        // ==========================================
-        // MOSTRAR FRAME DEL CELULAR
-        // ==========================================
-        function mostrarFrame(frameData) {
-            const img = new Image();
-            img.onload = () => {
-                if (canvas.width !== img.width || canvas.height !== img.height) {
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    detectionCanvas.width = img.width;
-                    detectionCanvas.height = img.height;
-                }
-
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-
-                frameCount++;
-                predecirConModelo();
-            };
-            img.onerror = () => {
-                log('❌ Error cargando frame', 'error');
-            };
-            img.src = frameData;
-        }
-
-        // ==========================================
-        // MOSTRAR FRAME DEL CELULAR
-        // ==========================================
 
         // ==========================================
         // INICIALIZACIÓN
         // ==========================================
         log('🍕 Pizza Index iniciado (Computador)', 'success');
-        log('📱 Esperando que el celular se conecte o usar cámara local...', 'info');
-        updateStatus('🔵 Listo para detectar pizzas', 'info');
-
-        // Cargar modelo de ML
         cargarModelo();
-    </script>
-</body>
 
+        function startAudioOnFirstClick() {
+            AudioEngine.start();
+            document.removeEventListener('click', startAudioOnFirstClick);
+        }
+        document.addEventListener('click', startAudioOnFirstClick);
+    </script>
 <style>
+    :root {
+        --primary-color: #0891b2;
+        --primary-hover: #0e7490;
+        --background: #f9fafb;
+        --foreground: #111827;
+        --muted: #f3f4f6;
+        --muted-foreground: #6b7280;
+        --border: #e5e7eb;
+        --radius-sm: 0.375rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+        --transition-normal: 0.3s ease;
+    }
+
+    html, body {
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        background-color: var(--background);
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .header {
+        padding: 0.25rem 2rem;
+        text-align: center;
+        flex-shrink: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .header h1 {
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .header p {
+        font-size: 0.9rem;
+        margin: 0;
+        color: var(--muted-foreground);
+    }
+    .title-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .top-right-controls {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 10;
+    }
+
+    .footer {
+        padding: 0.25rem 2rem;
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+        flex-shrink: 0;
+        border-top: 1px solid var(--border);
+    }
+
+    .main-content {
+        display: flex;
+        flex-grow: 1;
+        min-height: 0;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .left-column {
+        flex: 3;
+        overflow-y: auto;
+        padding: 1.5rem;
+    }
+
+    .right-column {
+        flex: 1; /* 0.5 ratio part -> 1 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centrar contenido verticalmente */
+        align-items: center; /* Centrar contenido horizontalmente */
+        min-width: 0;
+        gap: 1.5rem;
+        background: transparent; /* SIN CONTENEDOR */
+        border: none; /* SIN CONTENEDOR */
+        padding: 1.5rem;
+    }
+
+    #video-container {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        background: black;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    #canvas, #detection-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    #detection-canvas {
+        pointer-events: none;
+    }
+
+    .main-controls {
+        margin: 0;
+        padding: 0;
+        display: flex; /* Added this line */
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    #info {
+        width: 100%;
+        background: var(--muted);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        text-align: center;
+    }
+    #status {
+        font-weight: 500;
+        color: var(--muted-foreground);
+        margin-bottom: 0.5rem;
+    }
+    #detection {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        min-height: 1.5em; /* Prevenir saltos de layout */
+    }
+
+    .stats-container {
+        margin-top: 2rem;
+    }
+    
+    .stats-container h3 {
+        margin-bottom: 1rem;
+        color: var(--foreground);
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    /* Scrollbar para la columna izquierda */
+    .left-column::-webkit-scrollbar { width: 8px; }
+    .left-column::-webkit-scrollbar-track { background: transparent; }
+    .left-column::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+
+    /* Estilos de botones y otros elementos */
     /* Personalizar botón de conexión */
     #ProtobjectPlusButton {
         width: 120px !important;
@@ -519,491 +599,100 @@
         content: ' Conectar';
     }
 
-    .button-group {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        margin: 1.5rem 0;
-        flex-wrap: wrap;
-    }
+    .volume-control { display: flex; align-items: center; gap: 0.5rem; width: 180px; }
+    .volume-icon-wrapper { position: relative; width: 24px; height: 24px; cursor: pointer; color: var(--muted-foreground); }
+    .volume-icon-wrapper svg { position: absolute; top: 0; left: 0; transition: opacity 0.2s ease; }
+    .volume-icon-muted { opacity: 0; }
+    .volume-control.is-muted .volume-icon-unmuted { opacity: 0; }
+    .volume-control.is-muted .volume-icon-muted { opacity: 1; }
+    .volume-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: var(--border); border-radius: 3px; outline: none; cursor: pointer; }
+    .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--primary-color);
+ border-radius: 50%; cursor: grab; border: 3px solid white; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); transition: all 0.2s ease; }
+    .volume-slider::-moz-range-thumb { width: 20px; height: 20px; background: var(--primary-color); border-radius: 50%; cursor: grab; border: 3px solid white; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); transition: all 0.2s ease; }
+    .button-group { display: flex; gap: 1rem; justify-content: center; margin: 0; flex-wrap: wrap; }
+    .btn-primary, .btn-secondary { background: var(--primary-color); color: white; border: none; padding: 0.75rem 2rem; font-size: 1rem; font-weight: 600; border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-normal); }
+    .btn-secondary { background: var(--muted-foreground); }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2); }
+    .btn-secondary:hover { background: #4b5563; transform: translateY(-2px); }
+    #placeholder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); }
+    #placeholder p { margin: 0.5rem 0; font-size: 1.1rem; }
+    .ml-predictions { display: flex; flex-direction: column; gap: 0.25rem; }
+    .loading-ml, .error-ml { text-align: center; padding: 1rem; color: var(--muted-foreground); font-style: italic; }
+    .error-ml { color: #dc2626; }
+    .ml-ready { text-align: center; margin-bottom: 1rem; }
+    .ml-ready p { margin: 0.25rem 0; }
+    .ml-classes { color: var(--primary-color); font-weight: 600; font-size: 0.9rem; }
+    .prediction-item { background: white; padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border); display: grid; grid-template-columns: 100px 1fr 70px; gap: 1rem; align-items: center; transition: all var(--transition-normal); }
+    .prediction-item.top-prediction { border-width: 2px; border-color: var(--primary-color); }
+    .prediction-label { font-weight: 600; color: var(--foreground); font-size: 0.9rem; }
+    .prediction-item.top-prediction .prediction-label { color: var(--primary-color); font-weight: 700; }
+    .prediction-bar-container { background: var(--muted); height: 16px; border-radius: var(--radius-sm); overflow: hidden; }
+    .prediction-bar { background: var(--primary-color); height: 100%; border-radius: var(--radius-sm); transition: width 0.3s ease; }
+    .prediction-value { font-weight: 700; font-size: 1rem; color: var(--primary-color); text-align: right; }
+    .prediction-item.top-prediction .prediction-value { font-size: 1.3rem; }
 
-    .btn-primary, .btn-secondary {
-        background: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.75rem 2rem;
-        font-size: 1rem;
-        font-weight: 600;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-        transition: all var(--transition-normal);
-        font-family: 'Montserrat', sans-serif;
-    }
-
-    .btn-secondary {
-        background: var(--muted-foreground);
-    }
-
-    .btn-primary:hover {
-        background: var(--primary-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
-    }
-
-            .btn-secondary:hover {
-                background: #4b5563;
-                transform: translateY(-2px);
-            }
-    
-            .btn-secondary.muted {
-                background: var(--muted);
-                color: var(--muted-foreground);
-                cursor: not-allowed;
-                transform: none;
-                text-decoration: line-through;
-            }
-        .color-tag {
-        display: inline-block;
-        padding: 0.2rem 0.5rem;
-        border-radius: var(--radius-sm);
-        font-weight: 600;
-        font-size: 0.85rem;
-        margin: 0 0.2rem;
-    }
-
-    .color-tag.red { background: #fee2e2; color: #dc2626; }
-    .color-tag.blue { background: #dbeafe; color: #2563eb; }
-    .color-tag.green { background: #dcfce7; color: #059669; }
-    .color-tag.purple { background: #f3e8ff; color: #7c3aed; }
-    .color-tag.yellow { background: #fef3c7; color: #ca8a04; }
-
-    #placeholder {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        color: var(--muted-foreground);
-    }
-
-    #placeholder p {
-        margin: 0.5rem 0;
-        font-size: 1.1rem;
-    }
-
-    #placeholder .small {
-        font-size: 0.9rem;
-        color: var(--primary-color);
-    }
-
-    #detection-canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-    }
-
-    .stats-container {
-        background: var(--muted);
-        padding: 1.5rem;
-        border-radius: var(--radius-lg);
-        margin: 1.5rem 0;
-        border: 1px solid var(--border);
-    }
-
-    .stats-container h3 {
-        margin-bottom: 1rem;
-        color: var(--foreground);
-        font-size: 1.1rem;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-    }
-
-    .stat-item {
-        background: white;
-        padding: 0.75rem;
-        border-radius: var(--radius-sm);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid var(--border);
-    }
-
-    .stat-label {
-        font-weight: 500;
-        color: var(--muted-foreground);
-    }
-
-    .stat-value {
-        font-weight: 700;
-        font-size: 1.2rem;
-        color: var(--primary-color);
-    }
-
-    .pizza-detections {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .pizza-item {
-        background: white;
-        padding: 1rem;
-        border-radius: var(--radius-sm);
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        border: 1px solid var(--border);
-    }
-
-    .pizza-number {
-        font-weight: 700;
-        color: var(--primary-color);
-        font-size: 1.2rem;
-    }
-
-    .pizza-color {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        border: 2px solid var(--border);
-    }
-
-    .no-detection {
-        color: var(--muted-foreground);
-        text-align: center;
-        padding: 1rem;
-        font-style: italic;
-    }
-
-    /* Estilos para predicciones ML */
-    .ml-predictions {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .loading-ml, .error-ml {
-        text-align: center;
-        padding: 1rem;
-        color: var(--muted-foreground);
-        font-style: italic;
-    }
-
-    .error-ml {
-        color: #dc2626;
-    }
-
-    .ml-ready {
-        background: white;
-        padding: 1rem;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--border);
-        text-align: center;
-    }
-
-    .ml-ready p {
-        margin: 0.25rem 0;
-    }
-
-    .ml-classes {
-        color: var(--primary-color);
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
-
-    .prediction-item {
-        background: white;
-        padding: 1rem;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--border);
-        display: grid;
-        grid-template-columns: 120px 1fr 80px;
-        gap: 1rem;
-        align-items: center;
-        transition: all var(--transition-normal);
-    }
-
-    .prediction-item.top-prediction {
-        border: 2px solid var(--primary-color);
-        background: linear-gradient(to right, rgba(8, 145, 178, 0.05), white);
-        box-shadow: 0 2px 8px rgba(8, 145, 178, 0.1);
-    }
-
-    .prediction-label {
-        font-weight: 600;
-        color: var(--foreground);
-        font-size: 1rem;
-    }
-
-    .prediction-item.top-prediction .prediction-label {
-        color: var(--primary-color);
-        font-weight: 700;
-        font-size: 1.1rem;
-    }
-
-    .prediction-bar-container {
-        background: var(--muted);
-        height: 24px;
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-        position: relative;
-    }
-
-    .prediction-bar {
-        background: linear-gradient(to right, var(--primary-color), var(--primary-hover));
-        height: 100%;
-        border-radius: var(--radius-sm);
-        transition: width 0.3s ease;
-    }
-
-    .prediction-value {
-        font-weight: 700;
-        font-size: 1.1rem;
-        color: var(--primary-color);
-        text-align: right;
-    }
-
-    .prediction-item.top-prediction .prediction-value {
-        font-size: 1.3rem;
-    }
-
-    @media (max-width: 768px) {
-        .prediction-item {
-            grid-template-columns: 100px 1fr 60px;
-            gap: 0.5rem;
-            padding: 0.75rem;
-        }
-
-        .prediction-label {
-            font-size: 0.9rem;
-        }
-
-        .prediction-value {
-            font-size: 1rem;
-        }
-    }
-
-    /* Estilos para visualización de evento */
+    /* Estilos para visualización de evento (restaurado y simplificado) */
     .event-display {
         background: white;
-        border: 2px solid var(--border);
         border-radius: var(--radius-lg);
-        margin: 1.5rem 0;
-        overflow: hidden;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        padding: 2rem;
+        margin-top: 2rem;
+        display: none;
         opacity: 0;
-        transform: translateY(-20px);
-        transition: all 0.3s ease;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        transform: translateY(10px);
+        transition: all 0.4s ease;
     }
-
     .event-display.show {
         opacity: 1;
         transform: translateY(0);
     }
-
     .event-header {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-        color: white;
-        padding: 1.5rem;
+        padding: 0 0 1.5rem 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 1.5rem;
     }
-
     .event-header h2 {
         margin: 0;
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--foreground);
     }
-
-    .btn-clear {
-        background: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 2rem;
-        font-weight: 200;
-        transition: all 0.2s ease;
+    .event-content { padding: 0; }
+    .event-main { display: flex; gap: 1.5rem; align-items: center; margin-bottom: 1.5rem; }
+    .event-emoji {
+        width: 64px;
+        height: 64px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding-bottom: 4px; /* Ajuste fino para centrar el '+' visualmente */
+        background: var(--muted);
+        border-radius: 50%;
+        flex-shrink: 0;
     }
-
-    .btn-clear:hover {
-        background: rgba(0, 0, 0, 0.2);
-        transform: rotate(90deg);
-    }
-
-    .event-content {
-        padding: 2rem;
-    }
-
-    .event-main {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
-        margin-bottom: 2rem;
-    }
-
-    .event-emoji {
-        font-size: 4rem;
-        line-height: 1;
-    }
-
-    .event-details h3 {
-        margin: 0 0 0.5rem 0;
-        font-size: 1.8rem;
-        color: var(--foreground);
-    }
-
-    .event-date {
-        color: var(--muted-foreground);
-        margin: 0.25rem 0;
-        font-size: 1rem;
-    }
-
+    .event-details h3 { margin: 0 0 0.25rem 0; font-size: 1.5rem; color: var(--foreground); }
+    .event-date { color: var(--muted-foreground); margin: 0; font-size: 0.9rem; }
     .event-category {
         display: inline-block;
-        background: var(--muted);
+        background: var(--primary-color);
+        color: white;
         padding: 0.25rem 0.75rem;
         border-radius: var(--radius-sm);
         font-size: 0.9rem;
         font-weight: 600;
-        color: var(--primary-color);
         margin-top: 0.5rem;
     }
+    .event-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-box { background: var(--muted); padding: 1rem; border-radius: var(--radius-md); text-align: center; }
+    .stat-label { display: block; font-size: 0.8rem; color: var(--muted-foreground); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-number { display: block; font-size: 1.8rem; font-weight: 700; color: var(--primary-color); }
+    .event-description p { margin: 0; color: var(--foreground); line-height: 1.6; font-size: 1rem; }
 
-    .event-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .stat-box {
-        background: var(--muted);
-        padding: 1rem;
-        border-radius: var(--radius-md);
-        text-align: center;
-        border: 1px solid var(--border);
-    }
-
-    .stat-label {
-        display: block;
-        font-size: 0.85rem;
-        color: var(--muted-foreground);
-        margin-bottom: 0.5rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .stat-number {
-        display: block;
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-color);
-    }
-
-    .event-description {
-        background: var(--muted);
-        padding: 1.5rem;
-        border-radius: var(--radius-md);
-        border-left: 4px solid var(--primary-color);
-    }
-
-    .event-description p {
-        margin: 0;
-        color: var(--foreground);
-        line-height: 1.6;
-        font-size: 1rem;
-    }
-
-    /* Mejoras para pizza-item */
-    .pizza-item {
-        background: white;
-        padding: 1rem;
-        border-radius: var(--radius-sm);
-        display: grid;
-        grid-template-columns: auto auto 1fr;
-        align-items: center;
-        gap: 1rem;
-        border: 1px solid var(--border);
-        transition: all 0.2s ease;
-    }
-
-    .pizza-item.has-event {
-        border-left: 4px solid var(--primary-color);
-        background: linear-gradient(to right, rgba(8, 145, 178, 0.05), white);
-    }
-
-    .pizza-item:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        transform: translateY(-2px);
-    }
-
-    .pizza-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .pizza-color-name {
-        font-weight: 600;
-        color: var(--foreground);
-    }
-
-    .pizza-event {
-        color: var(--primary-color);
-        font-weight: 700;
-        font-size: 0.95rem;
-    }
-
-    .pizza-no-event {
-        color: var(--muted-foreground);
-        font-size: 0.85rem;
-        font-style: italic;
-    }
-
-    @media (max-width: 768px) {
-        .event-main {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .event-emoji {
-            font-size: 3rem;
-        }
-
-        .event-details h3 {
-            font-size: 1.4rem;
-        }
-
-        .event-stats {
-            grid-template-columns: 1fr;
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-        }
-
-        .pizza-item {
-            grid-template-columns: auto;
-            gap: 0.5rem;
-        }
-
-        .pizza-info {
-            grid-column: 1 / -1;
-        }
-    }
+    @media (max-width: 1024px) { .main-content { flex-direction: column; } .left-column { flex: 0 0 auto; } .right-column { flex: 1; } }
 </style>
+</body>
 
 </html>
