@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍕 Pizza Pentagon Detector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="desktop-view">
+        <h1>🍕 Pizza Pentagon Detector</h1>
+        
+        <div class="instructions">
+            <h2>📋 Instrucciones:</h2>
+            <ol>
+                <li>Esta página se abre en tu <strong>COMPUTADOR</strong></li>
+                <li>Haz clic en "Generar QR Code"</li>
+                <li>Escanea el código QR con la cámara de tu <strong>CELULAR</strong></li>
+                <li>En el celular, acepta los permisos de cámara</li>
+                <li>La cámara del celular aparecerá aquí en el computador</li>
+            </ol>
+        </div>
+
+        <div class="button-group">
+            <button id="generateQR" onclick="inicializarComputador()">🎯 Generar QR Code</button>
+            <button id="testCamera" onclick="testCamaraLocal()">🎥 Test Cámara Local</button>
+        </div>
+
+        <div id="video-container">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div id="info">
+            <div id="status">🔵 Presiona "Generar QR Code" para comenzar</div>
+            <div id="detection">Ninguna pizza detectada</div>
+        </div>
+
+        <div id="qr-container" style="display: none;">
+            <h3>📱 Escanea este QR con tu celular:</h3>
+            <canvas id="qr-code"></canvas>
+            <p class="qr-url" id="qr-url"></p>
+        </div>
+
+        <div class="debug-info">
+            <h4>📊 Registro de Conexión:</h4>
+            <div id="debug-log"></div>
+        </div>
+    </div>
+
+    <div class="container mobile-view" id="mobile-view">
+        <h1 style="text-align: center; color: #333;">📱 Cámara del Celular</h1>
+        <div style="padding: 20px;">
+            <video id="mobile-video" autoplay playsinline style="width: 100%; max-width: 640px; margin: 0 auto; display: block; border-radius: 10px; background: black;"></video>
+            <div id="mobile-status" style="text-align: center; margin: 20px; font-weight: bold; font-size: 1.2em; padding: 15px; background: #fff3cd; border-radius: 10px;">
+                🔄 Iniciando...
+            </div>
+            <div style="text-align: center; margin: 20px; background: white; padding: 15px; border-radius: 10px;">
+                <p style="color: #333; margin-bottom: 10px;">📊 Estadísticas:</p>
+                <p style="color: #667eea; font-size: 1.5em; font-weight: bold;">
+                    Frames enviados: <span id="frame-counter">0</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMPORTANTE: Cargar librerías ANTES del script.js -->
+    <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
