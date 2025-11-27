@@ -33,6 +33,7 @@
                                 <p id="event-date" class="event-date">Fecha</p>
                                 <p id="event-category" class="event-category">Categoría</p>
                             </div>
+                            <div class="event-confidence" id="event-confidence">0%</div>
                         </div>
                         <div class="event-stats">
                             <div class="stat-box">
@@ -51,17 +52,6 @@
                         <div class="event-description">
                             <p id="event-desc">Descripción del evento</p>
                         </div>
-                    </div>
-                </div>
-
-                <div id="info">
-                    <div id="detection">Ninguna pizza detectada</div>
-                </div>
-
-                <div class="stats-container">
-                    <h3>🤖 Predicciones del Modelo</h3>
-                    <div id="ml-predictions" class="ml-predictions">
-                        <p class="loading-ml">Cargando modelo...</p>
                     </div>
                 </div>
             </div>
@@ -128,12 +118,10 @@
         const detectionCanvas = document.getElementById('detection-canvas');
         const detectionCtx = detectionCanvas.getContext('2d');
         const video = document.getElementById('video');
-        const detectionEl = document.getElementById('detection');
         const debugLog = document.getElementById('debug-log'); // Restaurado para evitar ReferenceError
         const placeholder = document.getElementById('placeholder');
         const volumeSlider = document.getElementById('volumeSlider');
         const volumeIconWrapper = document.getElementById('volumeIconWrapper');
-        const mlPredictionsEl = document.getElementById('ml-predictions');
         
         let frameCount = 0;
         let isConnected = false;
@@ -192,10 +180,10 @@
                             // ========================================== 
                             // FUNCIONES DE EVENTOS
                             // ========================================== 
-                            function mostrarEvento(evento) {
+                            function mostrarEvento(evento, confidence = 0) {
                                 if (!evento) return;
                                 const display = document.getElementById('event-display');
-                                
+
                                 // Actualizar contenido
                                 document.getElementById('event-emoji').innerHTML = `<img src="${COLORES_CONFIG[evento.color].icono}" alt="${COLORES_CONFIG[evento.color].nombre}" style="width: 48px; height: 48px;">`;
                                 document.getElementById('event-name').textContent = evento.nombre;
@@ -205,11 +193,12 @@
                                 document.getElementById('event-incremento').textContent = evento.incremento + '%';
                                 document.getElementById('event-gravedad').textContent = TAMAÑOS_CONFIG[evento.tamaño].gravedad;
                                 document.getElementById('event-desc').textContent = evento.descripcion;
-                    
+                                document.getElementById('event-confidence').textContent = confidence.toFixed(1) + '%';
+
                                 // Aplicar color de categoría
                                 const colorConfig = COLORES_CONFIG[evento.color];
                                 display.style.borderLeftColor = colorConfig.hex;
-                    
+
                                 // Mostrar con animación
                                 display.style.display = 'block';
                                 setTimeout(() => display.classList.add('show'), 10);
@@ -233,10 +222,8 @@
                                     model = await tmImage.load(MODEL_URL, METADATA_URL);
                                     modelLoaded = true;
                                     log('✅ Modelo cargado exitosamente', 'success');
-                                    mlPredictionsEl.innerHTML = '<p class="ml-ready">Modelo listo para detectar.</p>';
                                 } catch (error) {
                                     log('❌ Error cargando el modelo: ' + error.message, 'error');
-                                    mlPredictionsEl.innerHTML = '<p class="error-ml">Error al cargar el modelo.</p>';
                                 }
                             }
                     
@@ -249,23 +236,7 @@
                                 try {
                                     const predictions = await model.predict(canvas);
                                     predictions.sort((a, b) => b.probability - a.probability);
-                    
-                                    const predHTML = predictions.map((pred, idx) => {
-                                        const percentage = (pred.probability * 100).toFixed(1);
-                                        const barWidth = percentage;
-                                        const isTop = idx === 0;
-                                        return `
-                                            <div class="prediction-item ${isTop ? 'top-prediction' : ''}">
-                                                <div class="prediction-label">${pred.className}</div>
-                                                <div class="prediction-bar-container">
-                                                    <div class="prediction-bar" style="width: ${barWidth}%"></div>
-                                                </div>
-                                                <div class="prediction-value">${percentage}%</div>
-                                            </div>
-                                        `;
-                                    }).join('');
-                                    mlPredictionsEl.innerHTML = predHTML;
-                    
+
                                     const topPrediction = predictions[0];
                                     const confidenceThreshold = 0.50;
                     
@@ -276,28 +247,25 @@
                                         if (eventConfig) {
                                             const eventoDetectado = buscarEvento(eventConfig.color, eventConfig.tamaño);
                                             if (eventoDetectado) {
-                                                detectionEl.textContent = `🎯 Evento: ${eventoDetectado.nombre} (${(topPrediction.probability * 100).toFixed(1)}%)`;
                                                 if (!eventoActual || eventoActual.id !== eventoDetectado.id) {
                                                     const now = Date.now();
                                                     if (now - lastDetectionTime < 3000) return;
                                                     lastDetectionTime = now;
-                                                    
+
                                                     AudioEngine.stopAll();
                                                     AudioEngine.play(eventoDetectado);
                                                     eventoActual = eventoDetectado;
-                                                    mostrarEvento(eventoDetectado);
+                                                    mostrarEvento(eventoDetectado, topPrediction.probability * 100);
                                                 }
                                             }
                                         } else {
                                             if (eventoActual) {
-                                                detectionEl.textContent = '⏳ Esperando detección...';
                                                 cerrarEvento();
                                                 AudioEngine.stopAll();
                                             }
                                         }
                                     } else {
                                         if (eventoActual) {
-                                            detectionEl.textContent = '⏳ Esperando detección...';
                                             lastDetectionTime = 0;
                                             cerrarEvento();
                                             AudioEngine.stopAll();
@@ -499,36 +467,6 @@
         justify-content: center;
         width: 100%;
     }
-    
-    #info {
-        width: 100%;
-        background: var(--muted);
-        border-radius: var(--radius-lg);
-        padding: 2rem;
-        text-align: center;
-    }
-    #status {
-        font-weight: 500;
-        color: var(--muted-foreground);
-        margin-bottom: 0.5rem;
-    }
-    #detection {
-        font-weight: 600;
-        font-size: 1.2rem;
-        color: var(--primary-color);
-        min-height: 1.5em; /* Prevenir saltos de layout */
-    }
-
-    .stats-container {
-        margin-top: 2rem;
-    }
-    
-    .stats-container h3 {
-        margin-bottom: 1rem;
-        color: var(--foreground);
-        font-size: 1.1rem;
-        text-align: center;
-    }
 
     /* Scrollbar para la columna izquierda */
     .left-column::-webkit-scrollbar { width: 8px; }
@@ -574,20 +512,6 @@
     .btn-secondary:hover { background: #4b5563; transform: translateY(-2px); }
     #placeholder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); }
     #placeholder p { margin: 0.5rem 0; font-size: 1.1rem; }
-    .ml-predictions { display: flex; flex-direction: column; gap: 0.25rem; }
-    .loading-ml, .error-ml { text-align: center; padding: 1rem; color: var(--muted-foreground); font-style: italic; }
-    .error-ml { color: #dc2626; }
-    .ml-ready { text-align: center; margin-bottom: 1rem; }
-    .ml-ready p { margin: 0.25rem 0; }
-    .ml-classes { color: var(--primary-color); font-weight: 600; font-size: 0.9rem; }
-    .prediction-item { background: white; padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border); display: grid; grid-template-columns: 100px 1fr 70px; gap: 1rem; align-items: center; transition: all var(--transition-normal); }
-    .prediction-item.top-prediction { border-width: 2px; border-color: var(--primary-color); }
-    .prediction-label { font-weight: 600; color: var(--foreground); font-size: 0.9rem; }
-    .prediction-item.top-prediction .prediction-label { color: var(--primary-color); font-weight: 700; }
-    .prediction-bar-container { background: var(--muted); height: 16px; border-radius: var(--radius-sm); overflow: hidden; }
-    .prediction-bar { background: var(--primary-color); height: 100%; border-radius: var(--radius-sm); transition: width 0.3s ease; }
-    .prediction-value { font-weight: 700; font-size: 1rem; color: var(--primary-color); text-align: right; }
-    .prediction-item.top-prediction .prediction-value { font-size: 1.3rem; }
 
     /* Estilos para visualización de evento (restaurado y simplificado) */
     .event-display {
@@ -642,6 +566,17 @@
         font-size: 0.9rem;
         font-weight: 600;
         margin-top: 0.5rem;
+    }
+    .event-confidence {
+        background: #10b981;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-md);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-left: auto;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
     }
     .event-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
     .stat-box { background: var(--muted); padding: 1rem; border-radius: var(--radius-md); text-align: center; }
