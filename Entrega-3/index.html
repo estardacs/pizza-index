@@ -195,10 +195,6 @@
                                 document.getElementById('event-desc').textContent = evento.descripcion;
                                 document.getElementById('event-confidence').textContent = confidence.toFixed(1) + '%';
 
-                                // Aplicar color de categoría
-                                const colorConfig = COLORES_CONFIG[evento.color];
-                                display.style.borderLeftColor = colorConfig.hex;
-
                                 // Mostrar con animación
                                 display.style.display = 'block';
                                 setTimeout(() => display.classList.add('show'), 10);
@@ -517,12 +513,10 @@
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         padding: 2rem;
         width: 100%;
-        max-width: 600px;
         display: none;
         opacity: 0;
         transform: translateY(10px);
         transition: all 0.4s ease;
-        border-left: 4px solid var(--primary-color);
     }
     .event-display.show {
         opacity: 1;
@@ -587,7 +581,6 @@
         .main-content { flex-direction: column; }
         .left-column { flex: 0 0 auto; min-height: auto; }
         .right-column { flex: 1; }
-        .event-display { max-width: 100%; }
     }
 </style>
 </body>
