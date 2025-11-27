@@ -419,7 +419,9 @@
 
     .left-column {
         flex: 3;
-        overflow-y: auto;
+        display: flex;
+        align-items: center; /* Centrar verticalmente */
+        justify-content: center; /* Centrar horizontalmente */
         padding: 1.5rem;
     }
 
@@ -468,11 +470,6 @@
         width: 100%;
     }
 
-    /* Scrollbar para la columna izquierda */
-    .left-column::-webkit-scrollbar { width: 8px; }
-    .left-column::-webkit-scrollbar-track { background: transparent; }
-    .left-column::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-
     /* Estilos de botones y otros elementos */
     /* Personalizar botón de conexión */
     #ProtobjectPlusButton {
@@ -519,11 +516,13 @@
         border-radius: var(--radius-lg);
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         padding: 2rem;
-        margin-top: 2rem;
+        width: 100%;
+        max-width: 600px;
         display: none;
         opacity: 0;
         transform: translateY(10px);
         transition: all 0.4s ease;
+        border-left: 4px solid var(--primary-color);
     }
     .event-display.show {
         opacity: 1;
@@ -584,7 +583,12 @@
     .stat-number { display: block; font-size: 1.8rem; font-weight: 700; color: var(--primary-color); }
     .event-description p { margin: 0; color: var(--foreground); line-height: 1.6; font-size: 1rem; }
 
-    @media (max-width: 1024px) { .main-content { flex-direction: column; } .left-column { flex: 0 0 auto; } .right-column { flex: 1; } }
+    @media (max-width: 1024px) {
+        .main-content { flex-direction: column; }
+        .left-column { flex: 0 0 auto; min-height: auto; }
+        .right-column { flex: 1; }
+        .event-display { max-width: 100%; }
+    }
 </style>
 </body>
 
