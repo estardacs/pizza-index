@@ -17,11 +17,6 @@
             <p>Detector de pizzas en tiempo real</p>
         </header>
 
-        <div class="top-right-controls">
-            <button id="local-camera-btn" class="btn-secondary">🎥 Testear con Cámara Local</button>
-            <button id="stop-camera-btn" class="btn-secondary" style="display: none;">⏹️ Detener Cámara</button>
-        </div>
-
         <div class="main-content">
             <!-- Columna Izquierda: Estadísticas y Eventos -->
             <div class="left-column">
@@ -83,7 +78,8 @@
                     <canvas id="canvas"></canvas>
                     <canvas id="detection-canvas"></canvas>
                     <div id="placeholder">
-                        <p>Haga clic en "Usar Cámara Local" para iniciar</p>
+                        <p>📱 Haga clic en "Conectar" para iniciar la cámara</p>
+                        <p class="small">El botón "Conectar" aparecerá en la esquina superior derecha</p>
                     </div>
                 </div>
 
@@ -99,7 +95,7 @@
                             <line x1="17" y1="9" x2="23" y2="15"></line>
                         </svg>
                     </div>
-                    <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider">
+                    <input type="range" id="volumeSlider" min="0" max="100" value="80" class="volume-slider">
                 </div>
             </div>
         </div>
@@ -135,16 +131,12 @@
         const detectionEl = document.getElementById('detection');
         const debugLog = document.getElementById('debug-log'); // Restaurado para evitar ReferenceError
         const placeholder = document.getElementById('placeholder');
-        const localCameraBtn = document.getElementById('local-camera-btn');
-        const stopCameraBtn = document.getElementById('stop-camera-btn');
         const volumeSlider = document.getElementById('volumeSlider');
         const volumeIconWrapper = document.getElementById('volumeIconWrapper');
         const mlPredictionsEl = document.getElementById('ml-predictions');
         
         let frameCount = 0;
         let isConnected = false;
-        let localStream = null;
-        let animationId = null;
         
         // Variables para el modelo ML
         let model = null;
@@ -160,8 +152,33 @@
         // ASIGNACIÓN DE CLASES DEL MODELO A EVENTOS
         // =======================================================================
         const MODEL_CLASS_MAPPING = {
-            "Class 1": { color: "ROJO", tamaño: 15 },   // Mapeado a Invasión de Irak
-            "Class 2": { color: "AZUL", tamaño: 15 },   // Mapeado a 11 de Septiembre
+            // Vacío (sin evento)
+            "Vacio": null,
+
+            // Pizzas Rojas → AZUL (Atentados Terroristas)
+            "pizza roja grande": { color: "AZUL", tamaño: 15 },
+            "pizza roja mediana": { color: "AZUL", tamaño: 10 },
+            "pizza roja chica": { color: "AZUL", tamaño: 5 },
+
+            // Pizzas Verdes → VERDE (Operaciones Especiales)
+            "pizza verde grande": { color: "VERDE", tamaño: 15 },
+            "pizza verde mediana": { color: "VERDE", tamaño: 10 },
+            "pizza verde chica": { color: "VERDE", tamaño: 5 },
+
+            // Pizzas Amarillas → NARANJA (Bombardeos y Ataques Aéreos)
+            "pizza amarilla grande": { color: "NARANJA", tamaño: 15 },
+            "pizza amarilla mediana": { color: "NARANJA", tamaño: 10 },
+            "pizza amarilla chica": { color: "NARANJA", tamaño: 5 },
+
+            // Pizzas Azules → AMARILLO (Crisis Políticas)
+            "pizza azul grande": { color: "AMARILLO", tamaño: 15 },  // Cuba
+            "pizza azul mediana": { color: "AMARILLO", tamaño: 10 }, // Rehenes Irán
+            "pizza azul chica": { color: "AMARILLO", tamaño: 5 },    // Intervención Libia
+
+            // Pizzas Rosadas → ROJO (Invasiones Terrestres)
+            // Nota: ROJO tiene 3 eventos pero solo hay 2 pizzas rosadas
+            "pizza rosada grande": { color: "ROJO", tamaño: 15 },
+            "pizza rosada chica": { color: "ROJO", tamaño: 5 },
         };
         
                             // ========================================== 
@@ -310,65 +327,6 @@
             volumeIconWrapper.parentElement.classList.toggle('is-muted', isMuted);
         });
 
-        // ========================================== 
-        // CÁMARA LOCAL
-        // ========================================== 
-        localCameraBtn.addEventListener('click', async () => {
-            try {
-                await AudioEngine.start();
-                log('🎥 Iniciando cámara local...', 'info');
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    video: { width: { ideal: 640 }, height: { ideal: 480 } }
-                });
-                video.srcObject = localStream;
-                video.style.display = 'none';
-                placeholder.style.display = 'none';
-                isConnected = true;
-                localCameraBtn.style.display = 'none';
-                stopCameraBtn.style.display = 'inline-block';
-                log('✅ Cámara local iniciada correctamente', 'success');
-
-                processLocalCamera();
-            } catch (error) {
-                log('❌ Error accediendo a cámara: ' + error.message, 'error');
-                alert('No se pudo iniciar la cámara: ' + error.message);
-            }
-        });
-
-        stopCameraBtn.addEventListener('click', () => {
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-                localStream = null;
-                video.srcObject = null;
-                isConnected = false;
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
-                    animationId = null;
-                }
-                placeholder.style.display = 'flex';
-                localCameraBtn.style.display = 'inline-block';
-                stopCameraBtn.style.display = 'none';
-                log('⏹️ Cámara local detenida', 'info');
-            }
-        });
-
-        function processLocalCamera() {
-            if (!isConnected || !video.videoWidth) {
-                animationId = requestAnimationFrame(processLocalCamera);
-                return;
-            }
-            if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                detectionCanvas.width = video.videoWidth;
-                detectionCanvas.height = video.videoHeight;
-            }
-            ctx.drawImage(video, 0, 0);
-            frameCount++;
-            predecirConModelo();
-            animationId = requestAnimationFrame(processLocalCamera);
-        }
-
         // ==========================================
         // RECIBIR MENSAJES DEL CELULAR
         // ==========================================
@@ -406,11 +364,18 @@
         log('🍕 Pizza Index iniciado (Computador)', 'success');
         cargarModelo();
 
+        // Iniciar audio con el primer click en cualquier elemento
         function startAudioOnFirstClick() {
+            console.log('🎵 Iniciando audio con primer click...');
             AudioEngine.start();
             document.removeEventListener('click', startAudioOnFirstClick);
+            document.removeEventListener('touchstart', startAudioOnFirstClick);
+            log('✅ Audio iniciado', 'success');
         }
-        document.addEventListener('click', startAudioOnFirstClick);
+
+        // Escuchar clicks y touches en todo el documento
+        document.addEventListener('click', startAudioOnFirstClick, { once: true });
+        document.addEventListener('touchstart', startAudioOnFirstClick, { once: true });
     </script>
 <style>
     :root {
@@ -465,13 +430,6 @@
     .title-icon {
         width: 24px;
         height: 24px;
-    }
-
-    .top-right-controls {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        z-index: 10;
     }
 
     .footer {

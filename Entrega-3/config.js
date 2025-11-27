@@ -1,4 +1,4 @@
-// Configuración de Protobject Framework
+  // Configuración de Protobject Framework
 // Habilitar modo producción para generar IDs únicos
 Protobject.setProduction(true);
 

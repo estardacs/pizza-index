@@ -112,6 +112,19 @@ const EVENTOS = [
         descripcion: "52 estadounidenses tomados como rehenes en Teherán",
         emoji: "🟡"
     },
+    {
+        id: 9,
+        nombre: "Intervención en Libia",
+        fecha: "19 de marzo de 2011",
+        color: "AMARILLO",
+        tamaño: 5,
+        categoria: "Crisis Políticas",
+        pizzasCriticas: 100,
+        pizzasNormales: 30,
+        incremento: 233,
+        descripcion: "Intervención militar internacional en la Guerra Civil Libia",
+        emoji: "🟡"
+    },
 
     // ========== ATENTADOS TERRORISTAS (AZUL) ==========
     {
@@ -206,7 +219,7 @@ const COLORES_CONFIG = {
         hex: "#dc2626",
         nombre: "Rojo",
         categoria: "Invasiones Terrestres",
-        icono: "🔴",
+        icono: "assets/icons/militar.svg",
         soundFile: "../Entrega-2/assets/sounds/marcha.mp3"
     },
     NARANJA: {
@@ -214,7 +227,7 @@ const COLORES_CONFIG = {
         hex: "#ea580c",
         nombre: "Naranja",
         categoria: "Bombardeos y Ataques Aéreos",
-        icono: "🟠",
+        icono: "assets/icons/bombardeo.svg",
         soundFile: "../Entrega-2/assets/sounds/explosion.mp3"
     },
     AMARILLO: {
@@ -222,7 +235,7 @@ const COLORES_CONFIG = {
         hex: "#ca8a04",
         nombre: "Amarillo",
         categoria: "Crisis Políticas",
-        icono: "🟡",
+        icono: "assets/icons/politica.svg",
         soundFile: "../Entrega-2/assets/sounds/conversacion.mp3"
     },
     AZUL: {
@@ -230,7 +243,7 @@ const COLORES_CONFIG = {
         hex: "#2563eb",
         nombre: "Azul",
         categoria: "Atentados Terroristas",
-        icono: "🔵",
+        icono: "assets/icons/terrorista.svg",
         soundFile: "../Entrega-2/assets/sounds/sirena.mp3"
     },
     VERDE: {
@@ -238,7 +251,7 @@ const COLORES_CONFIG = {
         hex: "#059669",
         nombre: "Verde",
         categoria: "Operaciones Especiales",
-        icono: "🟢",
+        icono: "assets/icons/espia.svg",
         soundFile: "../Entrega-2/assets/sounds/radio.mp3"
     }
 };
