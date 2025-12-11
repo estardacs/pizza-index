@@ -7,7 +7,7 @@
 
 ## Visualización Desplegada
 La versión funcional de la visualización está disponible en:
-[Github Pages](https://estardacs.github.io/proyecto-visualizacion-de-informacion/)
+[Github Pages](https://estardacs.github.io/pizza-index/)
 
 ## Tecnologías Utilizadas
 
